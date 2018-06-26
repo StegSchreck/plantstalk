@@ -1,17 +1,10 @@
-
 # Plantstalk
+Forked from [Sh4kE/plantstalk](https://github.com/Sh4kE/plantstalk).
 
-Some scripts to use the raspberrypi camera for shooting images of basically anything, (e.g. a terrarium).
-
-## Example images:
-
-![At daytime](example_images/daytime.png "At daytime")
-
-
-![At night](example_images/nighttime.png "At night")
-
-## convert pictures to video like this:
+## Setup
 ```
-cat *.png | ffmpeg -f image2pipe -i - 2017-04-13.mkv
+git clone https://github.com/adafruit/Adafruit_Python_DHT.git
+cd Adafruit_Python_DHT && sudo python3 setup.py install
+git clone https://github.com/StegSchreck/plantstalk.git
+cd plantstalk && pip3 install -r requirements.txt
 ```
-
