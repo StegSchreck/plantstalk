@@ -1,7 +1,7 @@
+ephem
 pytz
 pyephem
 Adafruit-BMP
-Adafruit-DHT
 Adafruit-GPIO
 Adafruit-PureIO
 influxdb
