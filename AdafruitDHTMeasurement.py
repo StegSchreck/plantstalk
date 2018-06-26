@@ -3,7 +3,7 @@ import sys
 
 import Adafruit_DHT
 
-sensor = Adafruit_DHT.DHT22
+sensor = Adafruit_DHT.DHT11
 gpio_input_pin = 19
 
 humidity, temperature = Adafruit_DHT.read_retry(sensor, gpio_input_pin)
