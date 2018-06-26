@@ -1,9 +1,6 @@
 ephem
 pytz
 pyephem
-Adafruit-BMP
-Adafruit-GPIO
-Adafruit-PureIO
 influxdb
 picamera
 requests
