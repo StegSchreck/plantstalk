@@ -5,6 +5,7 @@ import signal
 import Adafruit_DHT
 from influxdb import InfluxDBClient
 
+import ds18b20
 from RepeatedTimer import RepeatedTimer
 
 # DHT11 Sensor #
@@ -32,11 +33,18 @@ json_body = [
 ]
 
 
-def measure_humidity_and_temperature():
-    humidity, temperature = Adafruit_DHT.read_retry(dht_sensor, gpio_input_pin)
-    if not humidity or not temperature:
-        return measure_humidity_and_temperature()
-    return humidity, temperature
+def measure_humidity():
+    humidity, _ = Adafruit_DHT.read_retry(dht_sensor, gpio_input_pin)
+    if not humidity:
+        return measure_humidity()
+    return humidity
+
+
+def measure_temperature():
+    temperature = ds18b20.read()
+    if not temperature:
+        return measure_temperature()
+    return temperature
 
 
 def send_measurements(client, humidity, temperature, lpg, carbon_oxide, smoke):
@@ -52,7 +60,8 @@ def send_measurements(client, humidity, temperature, lpg, carbon_oxide, smoke):
 
 
 def measure(client):
-    humidity, temperature = measure_humidity_and_temperature()
+    humidity = measure_humidity()
+    temperature = measure_temperature()
     gas_measurement_result = mq.MQPercentage()
     lpg = gas_measurement_result["GAS_LPG"]
     carbon_oxide = gas_measurement_result["CO"]
@@ -63,6 +72,7 @@ def measure(client):
 def main():
     client = InfluxDBClient(influx_host_ip, influx_host_port, influx_db)
     client.switch_database(influx_db)
+    ds18b20.setup()
 
     RepeatedTimer(10, measure, client)
 
