@@ -17,7 +17,7 @@ influx_host_port = 8086
 influx_db = 'plantstalk'
 json_body = [
     {
-        "measurement": "plantstalk",
+        "measurement": influx_db,
         "fields": {
             "temperature": 0.0,
             "humidity": 0.0,
