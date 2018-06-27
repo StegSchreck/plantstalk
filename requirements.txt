@@ -1,5 +1,5 @@
+spidev
 ephem
 pytz
 influxdb
 requests
-MCP3008
