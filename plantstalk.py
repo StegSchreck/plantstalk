@@ -26,10 +26,10 @@ json_body = [
 ]
 
 
-def measure():
+def measure_humidity_and_temperature():
     humidity, temperature = Adafruit_DHT.read_retry(dht_sensor, gpio_input_pin)
     if not humidity or not temperature:
-        return measure()
+        return measure_humidity_and_temperature()
     return humidity, temperature
 
 
@@ -42,8 +42,8 @@ def send_measurements(client, humidity, temperature):
     client.write_points(json_body)
 
 
-def measurements(client):
-    humidity, temperature = measure()
+def measure(client):
+    humidity, temperature = measure_humidity_and_temperature()
     send_measurements(client, humidity, temperature)
 
 
@@ -51,7 +51,7 @@ def main():
     client = InfluxDBClient(influx_host_ip, influx_host_port, influx_db)
     client.switch_database(influx_db)
 
-    RepeatedTimer(10, measurements, client)
+    RepeatedTimer(10, measure, client)
 
     while True:
         signal.pause()
