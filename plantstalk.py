@@ -24,6 +24,9 @@ json_body = [
         "fields": {
             "temperature": 0.0,
             "humidity": 0.0,
+            "lpg": 0.0,
+            "carbon_oxide": 0.0,
+            "smoke": 0.0,
         }
     }
 ]
@@ -36,12 +39,15 @@ def measure_humidity_and_temperature():
     return humidity, temperature
 
 
-def send_measurements(client, humidity, temperature):
+def send_measurements(client, humidity, temperature, lpg, carbon_oxide, smoke):
     json_body[0]['fields']['temperature'] = temperature
     if 0 <= humidity <= 100:
         json_body[0]['fields']['humidity'] = humidity
     else:
         json_body[0]['fields'].pop('humidity', 0)
+    json_body[0]['fields']['lpg'] = lpg
+    json_body[0]['fields']['carbon_oxide'] = carbon_oxide
+    json_body[0]['fields']['smoke'] = smoke
     client.write_points(json_body)
 
 
@@ -51,8 +57,7 @@ def measure(client):
     lpg = gas_measurement_result["GAS_LPG"]
     carbon_oxide = gas_measurement_result["CO"]
     smoke = gas_measurement_result["SMOKE"]
-    print(gas_measurement_result)
-    send_measurements(client, humidity, temperature)
+    send_measurements(client, humidity, temperature, lpg, carbon_oxide, smoke)
 
 
 def main():

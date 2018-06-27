@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="93d202be-3f9b-4bce-aac0-4b76490ce9b3" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MCP3008.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mq.py" beforeDir="false" afterPath="$PROJECT_DIR$/mq.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PCF8591.py" beforeDir="false" afterPath="$PROJECT_DIR$/PCF8591.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plantstalk.py" beforeDir="false" afterPath="$PROJECT_DIR$/plantstalk.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -19,8 +17,8 @@
       <file leaf-file-name="plantstalk.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/plantstalk.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-214">
-              <caret line="12" column="31" lean-forward="true" selection-start-line="12" selection-start-column="31" selection-end-line="12" selection-end-column="31" />
+            <state relative-caret-position="493">
+              <caret line="47" column="39" lean-forward="true" selection-start-line="47" selection-start-column="39" selection-end-line="47" selection-end-column="39" />
               <folding>
                 <element signature="e#19#32#0" expanded="true" />
               </folding>
@@ -31,8 +29,8 @@
       <file leaf-file-name="mq.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/mq.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="527">
-              <caret line="31" column="22" selection-start-line="31" selection-start-column="22" selection-end-line="31" selection-end-column="22" />
+            <state relative-caret-position="612">
+              <caret line="48" column="24" selection-start-line="48" selection-start-column="24" selection-end-line="49" selection-end-column="24" />
               <folding>
                 <element signature="e#46#57#0" expanded="true" />
               </folding>
@@ -91,11 +89,8 @@
       <file leaf-file-name="PCF8591.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/PCF8591.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="12" column="1" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
-              <folding>
-                <element signature="e#564#576#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="534">
+              <caret line="46" column="48" lean-forward="true" selection-end-line="59" />
             </state>
           </provider>
         </entry>
@@ -120,13 +115,13 @@
         <option value="$PROJECT_DIR$/plantstalk_camera.py" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/dht11.py" />
-        <option value="$PROJECT_DIR$/plantstalk.py" />
         <option value="$PROJECT_DIR$/requirements.txt" />
         <option value="$PROJECT_DIR$/MCP3008.py" />
         <option value="$PROJECT_DIR$/ds18b20.py" />
-        <option value="$PROJECT_DIR$/PCF8591.py" />
         <option value="$PROJECT_DIR$/MQ2.py" />
         <option value="$PROJECT_DIR$/mq.py" />
+        <option value="$PROJECT_DIR$/PCF8591.py" />
+        <option value="$PROJECT_DIR$/plantstalk.py" />
       </list>
     </option>
   </component>
@@ -299,16 +294,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PCF8591.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="1" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
-          <folding>
-            <element signature="e#564#576#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
@@ -333,13 +318,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ds18b20.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="23" column="36" lean-forward="true" selection-start-line="23" selection-start-column="36" selection-end-line="23" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/MQ2.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -354,10 +332,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/ds18b20.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="23" column="36" lean-forward="true" selection-start-line="23" selection-start-column="36" selection-end-line="23" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PCF8591.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="534">
+          <caret line="46" column="48" lean-forward="true" selection-end-line="59" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/mq.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="31" column="22" selection-start-line="31" selection-start-column="22" selection-end-line="31" selection-end-column="22" />
+        <state relative-caret-position="612">
+          <caret line="48" column="24" selection-start-line="48" selection-start-column="24" selection-end-line="49" selection-end-column="24" />
           <folding>
             <element signature="e#46#57#0" expanded="true" />
           </folding>
@@ -366,8 +358,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/plantstalk.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-214">
-          <caret line="12" column="31" lean-forward="true" selection-start-line="12" selection-start-column="31" selection-end-line="12" selection-end-column="31" />
+        <state relative-caret-position="493">
+          <caret line="47" column="39" lean-forward="true" selection-start-line="47" selection-start-column="39" selection-end-line="47" selection-end-column="39" />
           <folding>
             <element signature="e#19#32#0" expanded="true" />
           </folding>
