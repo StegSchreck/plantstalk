@@ -12,7 +12,7 @@ dht_sensor = Adafruit_DHT.DHT11
 gpio_input_pin = 19
 
 # InfluxDB #
-influx_host_ip = '192.168.178.29'
+influx_host_ip = '127.0.0.1'
 influx_host_port = 8086
 influx_db = 'plantstalk'
 json_body = [
