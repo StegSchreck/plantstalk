@@ -3,10 +3,10 @@
 import math
 import time
 
-from MCP3008 import MCP3008
+import PCF8591 as ADC
 
 
-class MQ():
+class MQ:
     ######################### Hardware Related Macros #########################
     MQ_PIN = 0  # define which analog input channel you are going to use (MCP3008)
     RL_VALUE = 5  # define the load resistance on the board, in kilo ohms
@@ -29,7 +29,7 @@ class MQ():
     def __init__(self, Ro=10, analogPin=0):
         self.Ro = Ro
         self.MQ_PIN = analogPin
-        self.adc = MCP3008()
+        self.adc = ADC
 
         self.LPGCurve = [2.3, 0.21, -0.47]  # two points are taken from the curve.
         # with these two points, a line is formed which is "approximately equivalent"
@@ -65,7 +65,7 @@ class MQ():
     #          could be derived.
     ############################################################################
     def MQResistanceCalculation(self, raw_adc):
-        return float(self.RL_VALUE * (1023.0 - raw_adc) / float(raw_adc));
+        return float(self.RL_VALUE * (1023.0 - raw_adc) / float(raw_adc))
 
     ######################### MQCalibration ####################################
     # Input:   mq_pin - analog channel
@@ -86,7 +86,7 @@ class MQ():
         val = val / self.RO_CLEAN_AIR_FACTOR  # divided by RO_CLEAN_AIR_FACTOR yields the Ro
         # according to the chart in the datasheet
 
-        return val;
+        return val
 
     #########################  MQRead ##########################################
     # Input:   mq_pin - analog channel
@@ -115,11 +115,11 @@ class MQ():
     #          calculates the ppm (parts per million) of the target gas.
     ############################################################################
     def MQGetGasPercentage(self, rs_ro_ratio, gas_id):
-        if (gas_id == self.GAS_LPG):
+        if gas_id == self.GAS_LPG:
             return self.MQGetPercentage(rs_ro_ratio, self.LPGCurve)
-        elif (gas_id == self.GAS_CO):
+        elif gas_id == self.GAS_CO:
             return self.MQGetPercentage(rs_ro_ratio, self.COCurve)
-        elif (gas_id == self.GAS_SMOKE):
+        elif gas_id == self.GAS_SMOKE:
             return self.MQGetPercentage(rs_ro_ratio, self.SmokeCurve)
         return 0
 
@@ -133,4 +133,4 @@ class MQ():
     #          value.
     ############################################################################
     def MQGetPercentage(self, rs_ro_ratio, pcurve):
-        return (math.pow(10, (((math.log(rs_ro_ratio) - pcurve[1]) / pcurve[2]) + pcurve[0])))
+        return math.pow(10, (((math.log(rs_ro_ratio) - pcurve[1]) / pcurve[2]) + pcurve[0]))
