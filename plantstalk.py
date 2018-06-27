@@ -8,8 +8,11 @@ from influxdb import InfluxDBClient
 from RepeatedTimer import RepeatedTimer
 
 # DHT11 Sensor #
+from mq import MQ
+
 dht_sensor = Adafruit_DHT.DHT11
 gpio_input_pin = 19
+mq = MQ(analogPin=22)
 
 # InfluxDB #
 influx_host_ip = '127.0.0.1'
@@ -44,6 +47,11 @@ def send_measurements(client, humidity, temperature):
 
 def measure(client):
     humidity, temperature = measure_humidity_and_temperature()
+    gas_measurement_result = mq.MQPercentage()
+    lpg = gas_measurement_result["GAS_LPG"]
+    carbon_oxide = gas_measurement_result["CO"]
+    smoke = gas_measurement_result["SMOKE"]
+    print(gas_measurement_result)
     send_measurements(client, humidity, temperature)
 
 

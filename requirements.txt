@@ -2,3 +2,4 @@ ephem
 pytz
 influxdb
 requests
+MCP3008
