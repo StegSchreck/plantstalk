@@ -12,7 +12,7 @@ from RepeatedTimer import RepeatedTimer
 from mq import MQ
 
 dht_sensor = Adafruit_DHT.DHT11
-gpio_input_pin = 19
+gpio_input_pin_humidity_sensor = 5
 mq = MQ(analogPin=22)
 
 # InfluxDB #
@@ -34,7 +34,7 @@ json_body = [
 
 
 def measure_humidity():
-    humidity, _ = Adafruit_DHT.read_retry(dht_sensor, gpio_input_pin)
+    humidity, _ = Adafruit_DHT.read_retry(dht_sensor, gpio_input_pin_humidity_sensor)
     if not humidity:
         return measure_humidity()
     return humidity
