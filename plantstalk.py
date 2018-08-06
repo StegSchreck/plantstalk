@@ -3,17 +3,23 @@
 import signal
 
 import Adafruit_DHT
+from Adafruit_BMP.BMP085 import BMP085
+from gpiozero import InputDevice
 from influxdb import InfluxDBClient
 
-import ds18b20
+import ds18b20 as temperature_sensor
 from RepeatedTimer import RepeatedTimer
-
-# DHT11 Sensor #
 from mq import MQ
 
-dht_sensor = Adafruit_DHT.DHT11
+# DHT22 humidity sensor #
+dht_sensor = Adafruit_DHT.DHT22
 gpio_input_pin_humidity_sensor = 5
+
+# MQ gas sensor #
 mq = MQ(analogPin=22)
+
+# BMP180 air pressure sensor #
+bmp_sensor = BMP085()
 
 # InfluxDB #
 influx_host_ip = '127.0.0.1'
@@ -28,6 +34,8 @@ json_body = [
             "lpg": 0.0,
             "carbon_oxide": 0.0,
             "smoke": 0.0,
+            "pressure": 0.0,
+            "rain": 0.0,
         }
     }
 ]
@@ -41,21 +49,35 @@ def measure_humidity():
 
 
 def measure_temperature():
-    temperature = ds18b20.read()
+    temperature = temperature_sensor.read()
     if not temperature:
         return measure_temperature()
     return temperature
 
 
-def send_measurements(client, humidity, temperature, lpg, carbon_oxide, smoke):
+def measure_pressure():
+    pressure = bmp_sensor.read_pressure()
+    if not pressure:
+        return measure_pressure()
+    return pressure
+
+
+def measure_rain():
+    rain_is_falling = InputDevice(18).is_active
+    return 1.0 if rain_is_falling else 0.0
+
+
+def send_measurements(client, humidity, temperature, lpg, carbon_oxide, smoke, pressure, rain):
     json_body[0]['fields']['temperature'] = temperature
     if 0 <= humidity <= 100:
-        json_body[0]['fields']['humidity'] = humidity
+        json_body[0]['fields']['humidity'] = float(humidity)
     else:
         json_body[0]['fields'].pop('humidity', 0)
     json_body[0]['fields']['lpg'] = lpg
     json_body[0]['fields']['carbon_oxide'] = carbon_oxide
     json_body[0]['fields']['smoke'] = smoke
+    json_body[0]['fields']['pressure'] = pressure
+    json_body[0]['fields']['rain'] = rain
     client.write_points(json_body)
 
 
@@ -66,13 +88,15 @@ def measure(client):
     lpg = gas_measurement_result["GAS_LPG"]
     carbon_oxide = gas_measurement_result["CO"]
     smoke = gas_measurement_result["SMOKE"]
-    send_measurements(client, humidity, temperature, lpg, carbon_oxide, smoke)
+    pressure = measure_pressure()
+    rain = measure_rain()
+    send_measurements(client, humidity, temperature, lpg, carbon_oxide, smoke, pressure, rain)
 
 
 def main():
     client = InfluxDBClient(influx_host_ip, influx_host_port, influx_db)
     client.switch_database(influx_db)
-    ds18b20.setup()
+    temperature_sensor.setup()
 
     RepeatedTimer(10, measure, client)
 
