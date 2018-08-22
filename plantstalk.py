@@ -1,5 +1,4 @@
 #!/usr/bin/python
-from builtins import float
 
 import signal
 
