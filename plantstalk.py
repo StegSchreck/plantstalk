@@ -1,4 +1,5 @@
 #!/usr/bin/python
+from builtins import float
 
 import signal
 
@@ -9,14 +10,10 @@ from influxdb import InfluxDBClient
 
 import ds18b20 as temperature_sensor
 from RepeatedTimer import RepeatedTimer
-from mq import MQ
 
 # DHT22 humidity sensor #
 dht_sensor = Adafruit_DHT.DHT22
 gpio_input_pin_humidity_sensor = 5
-
-# MQ gas sensor #
-mq = MQ(analogPin=22)
 
 # BMP180 air pressure sensor #
 bmp_sensor = BMP085()
@@ -31,9 +28,6 @@ json_body = [
         "fields": {
             "temperature": 0.0,
             "humidity": 0.0,
-            "lpg": 0.0,
-            "carbon_oxide": 0.0,
-            "smoke": 0.0,
             "pressure": 0.0,
             "rain": 0.0,
         }
@@ -67,15 +61,12 @@ def measure_rain():
     return 1.0 if rain_is_falling else 0.0
 
 
-def send_measurements(client, humidity, temperature, lpg, carbon_oxide, smoke, pressure, rain):
+def send_measurements(client, humidity, temperature, pressure, rain):
     json_body[0]['fields']['temperature'] = temperature
     if 0 <= humidity <= 100:
         json_body[0]['fields']['humidity'] = float(humidity)
     else:
         json_body[0]['fields'].pop('humidity', 0)
-    json_body[0]['fields']['lpg'] = lpg
-    json_body[0]['fields']['carbon_oxide'] = carbon_oxide
-    json_body[0]['fields']['smoke'] = smoke
     json_body[0]['fields']['pressure'] = pressure
     json_body[0]['fields']['rain'] = rain
     client.write_points(json_body)
@@ -84,13 +75,9 @@ def send_measurements(client, humidity, temperature, lpg, carbon_oxide, smoke, p
 def measure(client):
     humidity = measure_humidity()
     temperature = measure_temperature()
-    gas_measurement_result = mq.MQPercentage()
-    lpg = gas_measurement_result["GAS_LPG"]
-    carbon_oxide = gas_measurement_result["CO"]
-    smoke = gas_measurement_result["SMOKE"]
     pressure = measure_pressure()
     rain = measure_rain()
-    send_measurements(client, humidity, temperature, lpg, carbon_oxide, smoke, pressure, rain)
+    send_measurements(client, humidity, temperature, pressure, rain)
 
 
 def main():
