@@ -1,0 +1,11 @@
+[Unit]
+Description=Plantstalk Service
+After=network.target influxdb.service
+
+[Service]
+Type=simple
+User=pi
+ExecStart=/usr/bin/python3 /home/pi/repos/plantstalk/plantstalk.py
+
+[Install]
+WantedBy=multi-user.target
