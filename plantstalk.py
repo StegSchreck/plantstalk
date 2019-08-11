@@ -11,7 +11,6 @@ from influxdb import InfluxDBClient
 
 import ds18b20 as temperature_sensor
 from RepeatedTimer import RepeatedTimer
-import GroveMultichannelGasSensor
 
 # DHT22 humidity sensor #
 dht_sensor = Adafruit_DHT.DHT22
@@ -82,13 +81,6 @@ def measure_uv_light():
     return uva, uvb, uv_comp1, uv_comp2, uva_index, uvb_index, avg_uv_index
 
 
-def measure_toxic_gases():
-    gas_sensor = GroveMultichannelGasSensor.MutichannelGasSensor(address=0x10)
-    ammonia = gas_sensor.readData(0x11)
-    carbon_monoxide = gas_sensor.readData(0x12)
-    nitrogen_dioxide = gas_sensor.readData(0x13)
-
-
 def send_measurements(client, humidity, temperature, pressure, uva, uvb, uv_comp1, uv_comp2, uva_index, uvb_index, avg_uv_index):
     json_body[0]['fields']['temperature'] = temperature
     if 0 <= humidity <= 100:
@@ -115,15 +107,14 @@ def measure(client):
 
 
 def main():
-    # client = InfluxDBClient(influx_host_ip, influx_host_port, influx_db)
-    # client.switch_database(influx_db)
-    # temperature_sensor.setup()
-    #
-    # RepeatedTimer(10, measure, client)
-    measure_toxic_gases()
+    client = InfluxDBClient(influx_host_ip, influx_host_port, influx_db)
+    client.switch_database(influx_db)
+    temperature_sensor.setup()
 
-    # while True:
-    #     signal.pause()
+    RepeatedTimer(10, measure, client)
+
+    while True:
+        signal.pause()
 
 
 if __name__ == '__main__':
