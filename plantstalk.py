@@ -55,19 +55,13 @@ def measure_pressure():
     return pressure
 
 
-def measure_rain():
-    rain_is_falling = InputDevice(18).is_active
-    return 1.0 if rain_is_falling else 0.0
-
-
-def send_measurements(client, humidity, temperature, pressure, rain):
+def send_measurements(client, humidity, temperature, pressure):
     json_body[0]['fields']['temperature'] = temperature
     if 0 <= humidity <= 100:
         json_body[0]['fields']['humidity'] = float(humidity)
     else:
         json_body[0]['fields'].pop('humidity', 0)
     json_body[0]['fields']['pressure'] = pressure
-    json_body[0]['fields']['rain'] = rain
     client.write_points(json_body)
 
 
@@ -75,8 +69,7 @@ def measure(client):
     humidity = measure_humidity()
     temperature = measure_temperature()
     pressure = measure_pressure()
-    rain = measure_rain()
-    send_measurements(client, humidity, temperature, pressure, rain)
+    send_measurements(client, humidity, temperature, pressure)
 
 
 def main():
