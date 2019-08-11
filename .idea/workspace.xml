@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="93d202be-3f9b-4bce-aac0-4b76490ce9b3" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plantstalk.py" beforeDir="false" afterPath="$PROJECT_DIR$/plantstalk.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -60,7 +61,7 @@
       <workItem from="1546873040328" duration="194000" />
       <workItem from="1547064795137" duration="13000" />
       <workItem from="1565508841568" duration="6000" />
-      <workItem from="1565508859042" duration="1341000" />
+      <workItem from="1565508859042" duration="5312000" />
     </task>
     <servers />
   </component>
