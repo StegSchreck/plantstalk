@@ -11,6 +11,7 @@ from influxdb import InfluxDBClient
 
 import ds18b20 as temperature_sensor
 from RepeatedTimer import RepeatedTimer
+import GroveMultichannelGasSensor
 
 # DHT22 humidity sensor #
 dht_sensor = Adafruit_DHT.DHT22
@@ -19,7 +20,7 @@ gpio_input_pin_humidity_sensor = 5
 # BMP180 air pressure sensor #
 bmp_sensor = BMP085()
 
-# VEML 6075 UVA / UVB sensor
+# VEML 6075 UVA / UVB sensor #
 bus4 = smbus.SMBus(4)
 uv_sensor = veml6075.VEML6075(i2c_dev=bus4)
 uv_sensor.set_shutdown(False)
@@ -38,6 +39,13 @@ json_body = [
             "humidity": 0.0,
             "pressure": 0.0,
             "rain": 0.0,
+            "uva": 0.0,
+            "uvb": 0.0,
+            "uv_comp1": 0.0,
+            "uv_comp2": 0.0,
+            "uva_index": 0.0,
+            "uvb_index": 0.0,
+            "avg_uv_index": 0.0,
         }
     }
 ]
@@ -71,10 +79,14 @@ def measure_uv_light():
     uva_index = uv_indices[0]
     uvb_index = uv_indices[1]
     avg_uv_index = uv_indices[2]
-    print(uva)
-    if not uva:
-        return measure_uv_light()
     return uva, uvb, uv_comp1, uv_comp2, uva_index, uvb_index, avg_uv_index
+
+
+def measure_toxic_gases():
+    gas_sensor = GroveMultichannelGasSensor.MutichannelGasSensor(address=0x10)
+    ammonia = gas_sensor.readData(0x11)
+    carbon_monoxide = gas_sensor.readData(0x12)
+    nitrogen_dioxide = gas_sensor.readData(0x13)
 
 
 def send_measurements(client, humidity, temperature, pressure, uva, uvb, uv_comp1, uv_comp2, uva_index, uvb_index, avg_uv_index):
@@ -103,14 +115,15 @@ def measure(client):
 
 
 def main():
-    client = InfluxDBClient(influx_host_ip, influx_host_port, influx_db)
-    client.switch_database(influx_db)
-    temperature_sensor.setup()
+    # client = InfluxDBClient(influx_host_ip, influx_host_port, influx_db)
+    # client.switch_database(influx_db)
+    # temperature_sensor.setup()
+    #
+    # RepeatedTimer(10, measure, client)
+    measure_toxic_gases()
 
-    RepeatedTimer(10, measure, client)
-
-    while True:
-        signal.pause()
+    # while True:
+    #     signal.pause()
 
 
 if __name__ == '__main__':
