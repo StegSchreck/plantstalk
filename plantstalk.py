@@ -10,6 +10,7 @@ from gpiozero import InputDevice
 from influxdb import InfluxDBClient
 
 import ds18b20 as temperature_sensor
+import GroveMultichannelGasSensor
 from RepeatedTimer import RepeatedTimer
 
 # DHT22 humidity sensor #
@@ -81,6 +82,12 @@ def measure_uv_light():
     return uva, uvb, uv_comp1, uv_comp2, uva_index, uvb_index, avg_uv_index
 
 
+def measure_toxic_gases():
+    gas_sensor = GroveMultichannelGasSensor.MultichannelGasSensor()
+    carbon_monoxide = gas_sensor.measure_CO()
+    print(carbon_monoxide)
+
+
 def send_measurements(client, humidity, temperature, pressure, uva, uvb, uv_comp1, uv_comp2, uva_index, uvb_index, avg_uv_index):
     json_body[0]['fields']['temperature'] = temperature
     if 0 <= humidity <= 100:
@@ -112,6 +119,7 @@ def main():
     temperature_sensor.setup()
 
     RepeatedTimer(10, measure, client)
+    # measure_toxic_gases()
 
     while True:
         signal.pause()
