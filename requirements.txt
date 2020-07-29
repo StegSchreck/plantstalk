@@ -3,4 +3,4 @@ ephem
 pytz
 influxdb
 requests
-picamera
+#picamera
