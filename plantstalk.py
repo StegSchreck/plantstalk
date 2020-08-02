@@ -14,7 +14,7 @@ from RepeatedTimer import RepeatedTimer
 # DHT22 humidity sensor #
 dht_sensor = Adafruit_DHT.DHT22
 gpio_input_pin_humidity_sensor_cold_spot = 5
-gpio_input_pin_humidity_sensor_hot_spot = 5 #TODO
+gpio_input_pin_humidity_sensor_hot_spot = 19
 
 # BMP180 air pressure sensor #
 bmp_sensor = BMP085()
@@ -57,8 +57,7 @@ def measure_cold_spot():
 
 
 def measure_hot_spot():
-    # return read_measurements_from_dht22(gpio_input_pin_humidity_sensor_hot_spot)
-    return -1, -1
+    return read_measurements_from_dht22(gpio_input_pin_humidity_sensor_hot_spot)
 
 
 def read_measurements_from_dht22(gpio_pin):

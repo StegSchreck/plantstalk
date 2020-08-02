@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="93d202be-3f9b-4bce-aac0-4b76490ce9b3" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/plantstalk.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/plantstalk.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plantstalk.py" beforeDir="false" afterPath="$PROJECT_DIR$/plantstalk.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plantstalk.service" beforeDir="false" afterPath="$PROJECT_DIR$/plantstalk-measure.service" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,10 +34,15 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="add_unversioned_files" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../fritzing-app" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -55,6 +60,8 @@
       <workItem from="1547064795137" duration="13000" />
       <workItem from="1565508841568" duration="6000" />
       <workItem from="1565508859042" duration="10760000" />
+      <workItem from="1596053093434" duration="11000" />
+      <workItem from="1596371698144" duration="7454000" />
     </task>
     <servers />
   </component>
@@ -74,6 +81,14 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="606" y="340" width="688" height="387" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1596377987605">
+      <screen x="0" y="25" width="1920" height="1031" />
+    </state>
+    <state x="606" y="340" width="688" height="387" key="#com.intellij.fileTypes.FileTypeChooser/0.25.1920.1031/3840.0.1920.1080/1920.0.1920.1080@0.25.1920.1031" timestamp="1596377987605" />
+    <state x="743" y="298" width="424" height="478" key="FileChooserDialogImpl" timestamp="1596053102247">
+      <screen x="0" y="25" width="1920" height="1031" />
+    </state>
+    <state x="743" y="298" width="424" height="478" key="FileChooserDialogImpl/0.25.1920.1031/3840.0.1920.1080/1920.0.1920.1080@0.25.1920.1031" timestamp="1596053102247" />
     <state x="449" y="175" key="SettingsEditor" timestamp="1596050453900">
       <screen x="0" y="25" width="1920" height="1031" />
     </state>
