@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import signal
-import time
 
 from LCD1602 import LCD
 from influxdb import InfluxDBClient
@@ -25,12 +24,12 @@ def read_data_from_database():
 
 def display():
     result = read_data_from_database()
-    values = [value for value in result.get_points(measurement='plantstalk')]
+    values = [value for value in result.get_points(measurement=influx_db)]
     lcd.clear()
 
-    # hot_spot_temperature = values[0]['hot_spot_temperature']
-    # hot_spot_humidity = values[0]['hot_spot_humidity']
-    # lcd.message("Warm {}° {}%".format(round(hot_spot_temperature, 1), round(hot_spot_humidity, 1)), 2)
+    hot_spot_temperature = values[0]['hot_spot_temperature']
+    hot_spot_humidity = values[0]['hot_spot_humidity']
+    lcd.message("Warm {}° {}%".format(round(hot_spot_temperature, 1), round(hot_spot_humidity, 1)), 1)
 
     cold_spot_temperature = values[0]['cold_spot_temperature']
     cold_spot_humidity = values[0]['cold_spot_humidity']

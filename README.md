@@ -33,9 +33,9 @@ python3 ./plantstalk.py
 
 ### Alternative: Install Systemd Unit
 ```bash
-sudo ln -s <plantstalk_repo>/plantstalk.service /etc/systemd/system/plantstalk.service  # install the service
-sudo systemctl start plantstalk
-sudo systemctl enable plantstalk  # make it reboot-safe 
+sudo ln -s <plantstalk_repo>/plantstalk-measure.service /etc/systemd/system/plantstalk-measure.service  # install the service
+sudo systemctl start plantstalk-measure
+sudo systemctl enable plantstalk-measure  # make it reboot-safe
 ```
 
 ## Apache configuration
