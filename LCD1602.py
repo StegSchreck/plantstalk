@@ -17,11 +17,9 @@ class LCD:
         self.LCD_LINE_2 = 0xC0  # LCD RAM addr for line two
 
         if backlight:
-            # on
-            self.LCD_BACKLIGHT = 0x08
+            self.LCD_BACKLIGHT = 0x08  # on
         else:
-            # off
-            self.LCD_BACKLIGHT = 0x00
+            self.LCD_BACKLIGHT = 0x00  # off
 
         self.ENABLE = 0b00000100  # Enable bit
 
@@ -43,7 +41,7 @@ class LCD:
         self.lcd_byte(0x33, self.LCD_CMD)  # 110011 Initialise
         self.lcd_byte(0x32, self.LCD_CMD)  # 110010 Initialise
         self.lcd_byte(0x06, self.LCD_CMD)  # 000110 Cursor move direction
-        self.lcd_byte(0x0C, self.LCD_CMD)  # 001100 Display On,Cursor Off, Blink Off
+        self.lcd_byte(0x0C, self.LCD_CMD)  # 001100 Display On, Cursor Off, Blink Off
         self.lcd_byte(0x28, self.LCD_CMD)  # 101000 Data length, number of lines, font size
         self.lcd_byte(0x01, self.LCD_CMD)  # 000001 Clear display
 

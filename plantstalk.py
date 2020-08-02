@@ -30,6 +30,8 @@ uv_sensor.set_integration_time('100ms')
 influx_host_ip = '127.0.0.1'
 influx_host_port = 8086
 influx_db = 'plantstalk'
+client = InfluxDBClient(influx_host_ip, influx_host_port, influx_db)
+client.switch_database(influx_db)
 json_body = [
     {
         "measurement": influx_db,
@@ -91,7 +93,7 @@ def measure_uv_light():
     return uva, uvb, uv_comp1, uv_comp2, uva_index, uvb_index, avg_uv_index
 
 
-def send_measurements(client, cold_spot_humidity, cold_spot_temperature, hot_spot_humidity, hot_spot_temperature, room_temperature, pressure, uva, uvb, uv_comp1, uv_comp2, uva_index, uvb_index, avg_uv_index):
+def send_measurements(cold_spot_humidity, cold_spot_temperature, hot_spot_humidity, hot_spot_temperature, room_temperature, pressure, uva, uvb, uv_comp1, uv_comp2, uva_index, uvb_index, avg_uv_index):
     if 0 <= cold_spot_humidity <= 100:
         json_body[0]['fields']['cold_spot_humidity'] = float(cold_spot_humidity)
     else:
@@ -124,21 +126,19 @@ def send_measurements(client, cold_spot_humidity, cold_spot_temperature, hot_spo
     client.write_points(json_body)
 
 
-def measure(client):
+def measure():
     cold_spot_humidity, cold_spot_temperature = measure_cold_spot()
     hot_spot_humidity, hot_spot_temperature = measure_hot_spot()
     room_temperature = measure_room_temperature()
     pressure = measure_pressure()
     uva, uvb, uv_comp1, uv_comp2, uva_index, uvb_index, avg_uv_index = measure_uv_light()
-    send_measurements(client, cold_spot_humidity, cold_spot_temperature, hot_spot_humidity, hot_spot_temperature, room_temperature, pressure, uva, uvb, uv_comp1, uv_comp2, uva_index, uvb_index, avg_uv_index)
+    send_measurements(cold_spot_humidity, cold_spot_temperature, hot_spot_humidity, hot_spot_temperature, room_temperature, pressure, uva, uvb, uv_comp1, uv_comp2, uva_index, uvb_index, avg_uv_index)
 
 
 def main():
-    client = InfluxDBClient(influx_host_ip, influx_host_port, influx_db)
-    client.switch_database(influx_db)
     temperature_sensor.setup()
 
-    RepeatedTimer(10, measure, client)
+    RepeatedTimer(10, measure)
 
     while True:
         signal.pause()

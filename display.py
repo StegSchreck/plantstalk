@@ -11,15 +11,18 @@ influx_host_ip = '127.0.0.1'
 influx_host_port = 8086
 influx_db = 'plantstalk'
 client = InfluxDBClient(influx_host_ip, influx_host_port, influx_db)
+client.switch_database(influx_db)
 
 lcd = LCD(i2c_addr=0x27)  # params available for rPi revision, I2C Address, and backlight on/off
 
 
 def read_data_from_database():
-    return client.query('SELECT "cold_spot_temperature", "cold_spot_humidity" '
+    return client.query('SELECT MEAN("cold_spot_temperature") as cold_spot_temperature, '
+                        '       MEAN("cold_spot_humidity") as cold_spot_humidity, '
+                        '       MEAN("hot_spot_temperature") as hot_spot_temperature, '
+                        '       MEAN("hot_spot_humidity") as hot_spot_humidity'
                         'FROM "plantstalk"."autogen"."plantstalk" '
-                        'ORDER BY time DESC '
-                        'LIMIT 1')
+                        'WHERE time >= now() - 5m')
 
 
 def display():
@@ -38,9 +41,8 @@ def display():
 
 def main():
     lcd.message("Initializing ...", 1)
-    client.switch_database(influx_db)
 
-    RepeatedTimer(10, display)
+    RepeatedTimer(30, display)
 
     while True:
         signal.pause()
