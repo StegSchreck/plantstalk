@@ -4,3 +4,5 @@ pytz
 influxdb
 requests
 #picamera
+paho-mqtt
+astral
