@@ -1,0 +1,11 @@
+[Unit]
+Description=MQTT Events to InfluxDB Service
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+ExecStart=/usr/bin/python3 /home/pi/repos/plantstalk/mqtt_to_influx.py
+
+[Install]
+WantedBy=multi-user.target
