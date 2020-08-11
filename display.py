@@ -1,5 +1,7 @@
 #!/usr/bin/env python
+import datetime
 import signal
+import time
 
 from LCD1602 import LCD
 from influxdb import InfluxDBClient
@@ -20,7 +22,7 @@ def read_data_from_database():
     return client.query('SELECT MEAN("cold_spot_temperature") as cold_spot_temperature, '
                         '       MEAN("cold_spot_humidity") as cold_spot_humidity, '
                         '       MEAN("hot_spot_temperature") as hot_spot_temperature, '
-                        '       MEAN("hot_spot_humidity") as hot_spot_humidity'
+                        '       MEAN("hot_spot_humidity") as hot_spot_humidity '
                         'FROM "plantstalk"."autogen"."plantstalk" '
                         'WHERE time >= now() - 5m')
 
@@ -40,7 +42,9 @@ def display():
 
 
 def main():
+    timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%d.%m.%Y %H:%M')
     lcd.message("Initializing ...", 1)
+    lcd.message(timestamp, 2)
 
     RepeatedTimer(30, display)
 

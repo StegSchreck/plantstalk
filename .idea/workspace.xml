@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="93d202be-3f9b-4bce-aac0-4b76490ce9b3" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LCD1602.py" beforeDir="false" afterPath="$PROJECT_DIR$/LCD1602.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/display.py" beforeDir="false" afterPath="$PROJECT_DIR$/display.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plantstalk.py" beforeDir="false" afterPath="$PROJECT_DIR$/plantstalk.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,6 +21,7 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="JupyterTrust" id="b82d07bb-abb5-4334-86a0-b7ef78397126" />
   <component name="ProjectId" id="1PGmWRBtE4UuaC2aAhTY86amPAL" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
@@ -47,6 +45,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -64,12 +63,19 @@
       <workItem from="1565508841568" duration="6000" />
       <workItem from="1565508859042" duration="10760000" />
       <workItem from="1596053093434" duration="11000" />
-      <workItem from="1596371698144" duration="21825000" />
+      <workItem from="1596371698144" duration="21953000" />
+      <workItem from="1596479198100" duration="2276000" />
+      <workItem from="1596569593900" duration="606000" />
+      <workItem from="1596656101855" duration="5881000" />
+      <workItem from="1596738943439" duration="2098000" />
+      <workItem from="1596747798376" duration="11000" />
+      <workItem from="1596912139186" duration="2916000" />
+      <workItem from="1597156149297" duration="3391000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="2" />
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -88,6 +94,10 @@
       <screen x="0" y="25" width="1920" height="1031" />
     </state>
     <state x="606" y="340" width="688" height="387" key="#com.intellij.fileTypes.FileTypeChooser/0.25.1920.1031/3840.0.1920.1080/1920.0.1920.1080@0.25.1920.1031" timestamp="1596377987605" />
+    <state x="100" y="124" width="1720" height="832" key="DiffContextDialog" timestamp="1596479579055">
+      <screen x="0" y="25" width="1920" height="1031" />
+    </state>
+    <state x="100" y="124" width="1720" height="832" key="DiffContextDialog/0.25.1920.1031/3840.0.1920.1080/1920.0.1920.1080@0.25.1920.1031" timestamp="1596479579055" />
     <state x="743" y="298" width="424" height="478" key="FileChooserDialogImpl" timestamp="1596053102247">
       <screen x="0" y="25" width="1920" height="1031" />
     </state>
@@ -96,9 +106,17 @@
       <screen x="0" y="25" width="1920" height="1031" />
     </state>
     <state x="449" y="175" key="SettingsEditor/0.25.1920.1031/3840.0.1920.1080/1920.0.1920.1080@0.25.1920.1031" timestamp="1596050453900" />
+    <state x="780" y="230" width="350" height="614" key="VCS.ChangeListViewerDialog" timestamp="1596479313162">
+      <screen x="0" y="25" width="1920" height="1031" />
+    </state>
+    <state x="780" y="230" width="350" height="614" key="VCS.ChangeListViewerDialog/0.25.1920.1031/3840.0.1920.1080/1920.0.1920.1080@0.25.1920.1031" timestamp="1596479313162" />
     <state x="746" y="232" width="418" height="610" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1596050214434">
       <screen x="0" y="25" width="1920" height="1031" />
     </state>
     <state x="746" y="232" width="418" height="610" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.25.1920.1031/3840.0.1920.1080/1920.0.1920.1080@0.25.1920.1031" timestamp="1596050214434" />
+    <state x="2131" y="0" width="1485" height="992" key="dock-window-1" timestamp="1596660976037">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2131" y="0" width="1485" height="992" key="dock-window-1/0.25.1920.1031/3840.0.1920.1080/1920.0.1920.1080@0.25.1920.1031" timestamp="1596660976037" />
   </component>
 </project>

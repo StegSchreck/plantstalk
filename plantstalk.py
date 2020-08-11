@@ -14,7 +14,7 @@ from RepeatedTimer import RepeatedTimer
 # DHT22 humidity sensor #
 dht_sensor = Adafruit_DHT.DHT22
 gpio_input_pin_humidity_sensor_cold_spot = 5
-gpio_input_pin_humidity_sensor_hot_spot = 19
+gpio_input_pin_humidity_sensor_hot_spot = 13
 
 # BMP180 air pressure sensor #
 bmp_sensor = BMP085()
@@ -55,15 +55,21 @@ json_body = [
 
 
 def measure_cold_spot():
-    return read_measurements_from_dht22(gpio_input_pin_humidity_sensor_cold_spot)
+    humidity, temperature = read_measurements_from_dht22(gpio_input_pin_humidity_sensor_cold_spot)
+    # print('measure_cold_spot', gpio_input_pin_humidity_sensor_cold_spot, humidity, temperature)
+    return humidity, temperature
 
 
 def measure_hot_spot():
-    return read_measurements_from_dht22(gpio_input_pin_humidity_sensor_hot_spot)
+    humidity, temperature = read_measurements_from_dht22(gpio_input_pin_humidity_sensor_hot_spot)
+    # print('measure_hot_spot', gpio_input_pin_humidity_sensor_hot_spot, humidity, temperature)
+    return humidity, temperature
 
 
 def read_measurements_from_dht22(gpio_pin):
+    # print('read_measurements_from_dht22', gpio_pin)
     humidity, temperature = Adafruit_DHT.read_retry(dht_sensor, gpio_pin)
+    # print(gpio_pin, humidity, temperature)
     if not humidity or not temperature:
         return read_measurements_from_dht22(gpio_pin)
     return humidity, temperature
@@ -73,6 +79,7 @@ def measure_room_temperature():
     room_temperature = temperature_sensor.read()
     if not room_temperature:
         return measure_room_temperature()
+    # print('measure_room_temperature', room_temperature)
     return room_temperature
 
 
@@ -80,6 +87,7 @@ def measure_pressure():
     pressure = bmp_sensor.read_pressure()
     if not pressure:
         return measure_pressure()
+    # print('measure_pressure', pressure)
     return pressure
 
 
@@ -90,10 +98,13 @@ def measure_uv_light():
     uva_index = uv_indices[0]
     uvb_index = uv_indices[1]
     avg_uv_index = uv_indices[2]
+    # print('measure_uv_light', uva, uvb, uv_comp1, uv_comp2, uva_index, uvb_index, avg_uv_index)
     return uva, uvb, uv_comp1, uv_comp2, uva_index, uvb_index, avg_uv_index
 
 
 def send_measurements(cold_spot_humidity, cold_spot_temperature, hot_spot_humidity, hot_spot_temperature, room_temperature, pressure, uva, uvb, uv_comp1, uv_comp2, uva_index, uvb_index, avg_uv_index):
+    # print('send_measurements')
+
     if 0 <= cold_spot_humidity <= 100:
         json_body[0]['fields']['cold_spot_humidity'] = float(cold_spot_humidity)
     else:
@@ -127,6 +138,7 @@ def send_measurements(cold_spot_humidity, cold_spot_temperature, hot_spot_humidi
 
 
 def measure():
+    # print('measure')
     cold_spot_humidity, cold_spot_temperature = measure_cold_spot()
     hot_spot_humidity, hot_spot_temperature = measure_hot_spot()
     room_temperature = measure_room_temperature()
@@ -136,6 +148,7 @@ def measure():
 
 
 def main():
+    # print('main')
     temperature_sensor.setup()
 
     RepeatedTimer(10, measure)
