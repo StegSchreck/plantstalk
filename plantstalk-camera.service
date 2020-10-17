@@ -1,0 +1,11 @@
+[Unit]
+Description=Plantstalk Camera Service
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+ExecStart=/usr/bin/python3 /home/pi/repos/plantstalk/plantstalk-camera.py
+
+[Install]
+WantedBy=multi-user.target
