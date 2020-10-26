@@ -6,10 +6,12 @@ from time import sleep
 
 from picamera import PiCamera
 
-folder_for_images = "/tmp/plantstalk"
+folder_for_images = "/home/pi/picures/plantstalk"
 interval_between_images_in_seconds = 20
 start_hour_in_the_evening = 21
 end_hour_in_the_morning = 8
+
+# /opt/vc/bin/raspivid -o - -t 0 -hf -w 640 -h 360 -fps 25|cvlc -vvv stream:///dev/stdin --sout '#standard{access=http,mux=ts,dst=:8090}' :demux=h264
 
 
 def take_image():

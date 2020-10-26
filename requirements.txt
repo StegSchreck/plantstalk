@@ -10,3 +10,7 @@ google-api-python-client
 google-auth-oauthlib
 google-auth-httplib2
 httplib2
+smbus
+veml6075
+Adafruit_DHT
+Adafruit_BMP
