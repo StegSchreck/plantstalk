@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-pushd /home/pi/picures/plantstalk
+pushd /home/pi/pictures/plantstalk
 
 DATE=$(date +"%Y-%m-%d")
 
@@ -21,6 +21,6 @@ then
   exit 2
 fi
 
-rm -rf /home/pi/picures/plantstalk/*
+rm -rf /home/pi/pictures/plantstalk/*
 
 popd

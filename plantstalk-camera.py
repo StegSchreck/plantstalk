@@ -6,7 +6,7 @@ from time import sleep
 
 from picamera import PiCamera
 
-folder_for_images = "/home/pi/picures/plantstalk"
+folder_for_images = "/home/pi/pictures/plantstalk"
 interval_between_images_in_seconds = 20
 start_hour_in_the_evening = 21
 end_hour_in_the_morning = 8
@@ -18,14 +18,17 @@ def take_image():
     with PiCamera(resolution=(2592, 1944)) as camera:
         sleep(2)
         if not os.path.exists(folder_for_images):
+            # print('creating target folder as it is not present:', folder_for_images)
             os.makedirs(folder_for_images)
         filename = datetime.now().strftime('plantstalk_%Y-%m-%d_%H-%M-%S.jpg')
         camera.capture(os.path.join(folder_for_images, filename))
+        # print('saved image', os.path.join(folder_for_images, filename))
 
 
 def main():
     while True:
         is_nighttime = not end_hour_in_the_morning <= datetime.now().hour < start_hour_in_the_evening
+        # print(end_hour_in_the_morning, datetime.now().hour, start_hour_in_the_evening, is_nighttime)
         if is_nighttime:
             take_image()
         time.sleep(interval_between_images_in_seconds)
