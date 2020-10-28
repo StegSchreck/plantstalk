@@ -2,6 +2,8 @@
 
 import argparse
 import http.client as httplib
+import os
+import pickle
 import random
 import time
 
@@ -11,6 +13,7 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.transport.requests import Request
 
 # Maximum number of times to retry before giving up.
 MAX_RETRIES = 10
@@ -35,7 +38,8 @@ RETRIABLE_STATUS_CODES = [500, 502, 503, 504]
 #   https://developers.google.com/youtube/v3/guides/authentication
 # For more information about the client_secrets.json file format, see:
 #   https://developers.google.com/api-client-library/python/guide/aaa_client_secrets
-CLIENT_SECRETS_FILE = '/home/pi/youtube_client_credentials.json'
+CLIENT_SECRETS_FILE = '/home/pi/youtube_client_secret.json'
+TOKEN_PICKLE_FILE = '/home/pi/token.pickle'
 
 # This OAuth 2.0 access scope allows an application to upload files to the
 # authenticated user's YouTube channel, but doesn't allow other types of access.
@@ -48,8 +52,30 @@ VALID_PRIVACY_STATUSES = ('public', 'private', 'unlisted')
 
 # Authorize the request and store authorization credentials.
 def get_authenticated_service():
-    flow = InstalledAppFlow.from_client_secrets_file(CLIENT_SECRETS_FILE, SCOPES)
-    credentials = flow.run_console()
+    credentials = None
+
+    if os.path.exists(TOKEN_PICKLE_FILE):
+        print('Loading credentials from file...')
+        with open(TOKEN_PICKLE_FILE, 'rb') as token:
+            credentials = pickle.load(token)
+
+    # If there are no valid credentials available, then either refresh the token or log in.
+    if not credentials or not credentials.valid:
+        if credentials and credentials.expired and credentials.refresh_token:
+            print('Refreshing access token...')
+            credentials.refresh(Request())
+        else:
+            print('Fetching new tokens...')
+            flow = InstalledAppFlow.from_client_secrets_file(CLIENT_SECRETS_FILE, scopes=SCOPES)
+
+            flow.run_local_server(port=8999, prompt='consent', authorization_prompt_message='')
+            credentials = flow.credentials
+
+            # Save the credentials for the next run
+            with open(TOKEN_PICKLE_FILE, 'wb') as f:
+                print('Saving credentials for future use...')
+                pickle.dump(credentials, f)
+
     return build(API_SERVICE_NAME, API_VERSION, credentials=credentials)
 
 
@@ -104,6 +130,7 @@ def resumable_upload(request):
             if response is not None:
                 if 'id' in response:
                     print('Video id "%s" was successfully uploaded.' % response['id'])
+                    print('Watch it here: https://youtu.be/%s' % response['id'])
                 else:
                     exit('The upload failed with an unexpected response: %s' % response)
         except HttpError as e:

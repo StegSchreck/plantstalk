@@ -7,7 +7,7 @@ from time import sleep
 from picamera import PiCamera
 
 folder_for_images = "/home/pi/pictures/plantstalk"
-interval_between_images_in_seconds = 20
+interval_between_images_in_seconds = 10
 start_hour_in_the_evening = 21
 end_hour_in_the_morning = 8
 

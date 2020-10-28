@@ -4,6 +4,8 @@ pushd /home/pi/pictures/plantstalk
 
 DATE=$(date +"%Y-%m-%d")
 
+rm -rf /home/pi/pictures/plantstalk/*.mp4
+
 ffmpeg -f image2 -pattern_type glob -i 'plantstalk_*.jpg' -r 10 -c:v libx264 -pix_fmt yuv420p "${DATE}".mp4
 if [ $? -ne 0 ]
 then
@@ -12,15 +14,16 @@ then
 fi
 
 python3 /home/pi/repos/plantstalk/video-uploader.py \
-  --file /tmp/plantstalk/${DATE}.mp4 \
+  --file ./${DATE}.mp4 \
   --title ${DATE} \
-  --description "Plantstalk Nachtsicht mit Raspberry Kamera -- ${DATE}"
+  --description "Plantstalk Nachtsicht mit Raspberry Kamera -- ${DATE}" \
+  --privacyStatus "public"
 if [ $? -ne 0 ]
 then
   echo "Could not upload video to YouTube"
   exit 2
 fi
 
-rm -rf /home/pi/pictures/plantstalk/*
+rm -rf /home/pi/pictures/plantstalk/*.jpg
 
 popd
