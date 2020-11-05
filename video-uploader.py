@@ -16,6 +16,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
 # Maximum number of times to retry before giving up.
+PLAYLIST_ID = "PLKwcm5tJuxBwfZLQaY8wzTu4G37rzAuBM"
 MAX_RETRIES = 10
 
 # Always retry when these exceptions are raised.
@@ -97,7 +98,7 @@ def initialize_upload(youtube, options):
     )
 
     # Call the API's videos.insert method to create and upload the video.
-    insert_request = youtube.videos().insert(
+    video_upload_request = youtube.videos().insert(
         part=','.join(body.keys()),
         body=body,
         # The chunksize parameter specifies the size of each chunk of data, in
@@ -114,7 +115,19 @@ def initialize_upload(youtube, options):
         media_body=MediaFileUpload(options.file, chunksize=-1, resumable=True)
     )
 
-    resumable_upload(insert_request)
+    video_id = resumable_upload(video_upload_request)
+    youtube.playlistItems().insert(
+        part="snippet",
+        body={
+            "snippet": {
+                "playlistId": PLAYLIST_ID,
+                "resourceId": {
+                  "kind": "youtube#video",
+                  "videoId": video_id
+                }
+            }
+        }
+    )
 
 
 # This method implements an exponential backoff strategy to resume a
@@ -131,6 +144,7 @@ def resumable_upload(request):
                 if 'id' in response:
                     print('Video id "%s" was successfully uploaded.' % response['id'])
                     print('Watch it here: https://youtu.be/%s' % response['id'])
+                    return response['id']
                 else:
                     exit('The upload failed with an unexpected response: %s' % response)
         except HttpError as e:
