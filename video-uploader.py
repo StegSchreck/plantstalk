@@ -16,7 +16,6 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
 # Maximum number of times to retry before giving up.
-PLAYLIST_ID = "PLKwcm5tJuxBwfZLQaY8wzTu4G37rzAuBM"
 MAX_RETRIES = 10
 
 # Always retry when these exceptions are raised.
@@ -44,11 +43,13 @@ TOKEN_PICKLE_FILE = '/home/pi/token.pickle'
 
 # This OAuth 2.0 access scope allows an application to upload files to the
 # authenticated user's YouTube channel, but doesn't allow other types of access.
-SCOPES = ['https://www.googleapis.com/auth/youtube.upload']
+SCOPES = ['https://www.googleapis.com/auth/youtube']
 API_SERVICE_NAME = 'youtube'
 API_VERSION = 'v3'
 
 VALID_PRIVACY_STATUSES = ('public', 'private', 'unlisted')
+
+PLAYLIST_ID = "PLKwcm5tJuxBwfZLQaY8wzTu4G37rzAuBM"
 
 
 # Authorize the request and store authorization credentials.
@@ -116,18 +117,25 @@ def initialize_upload(youtube, options):
     )
 
     video_id = resumable_upload(video_upload_request)
-    youtube.playlistItems().insert(
+    add_video_to_playlist(youtube, video_id, PLAYLIST_ID)
+
+
+def add_video_to_playlist(youtube, video_id, playlist_id):
+    print('Added video %s to playlist %s' % (video_id, playlist_id))
+    request = youtube.playlistItems().insert(
         part="snippet",
         body={
             "snippet": {
-                "playlistId": PLAYLIST_ID,
+                "playlistId": playlist_id,
                 "resourceId": {
-                  "kind": "youtube#video",
-                  "videoId": video_id
+                    "kind": "youtube#video",
+                    "videoId": video_id
                 }
             }
         }
     )
+    request.execute()
+    print('Watch the playlist here: https://www.youtube.com/playlist?list=%s' % PLAYLIST_ID)
 
 
 # This method implements an exponential backoff strategy to resume a

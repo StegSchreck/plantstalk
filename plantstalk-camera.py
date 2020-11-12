@@ -7,7 +7,7 @@ from time import sleep
 from picamera import PiCamera
 
 folder_for_images = "/home/pi/pictures/plantstalk"
-interval_between_images_in_seconds = 10
+interval_between_images_in_seconds = 5
 start_hour_in_the_evening = 21
 end_hour_in_the_morning = 8
 
@@ -16,7 +16,7 @@ end_hour_in_the_morning = 8
 
 def take_image():
     with PiCamera(resolution=(2592, 1944)) as camera:
-        sleep(2)
+        sleep(1)
         if not os.path.exists(folder_for_images):
             # print('creating target folder as it is not present:', folder_for_images)
             os.makedirs(folder_for_images)
