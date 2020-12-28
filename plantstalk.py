@@ -2,29 +2,23 @@
 
 import signal
 
-import smbus
-import veml6075
-import Adafruit_DHT
-from Adafruit_BMP.BMP085 import BMP085
+import board
+import busio
+
+import adafruit_veml6075
+import adafruit_dht
+import ds18b20 as temperature_sensor
+
+from RepeatedTimer import RepeatedTimer
 from influxdb import InfluxDBClient
 
-import ds18b20 as temperature_sensor
-from RepeatedTimer import RepeatedTimer
-
-# DHT22 humidity sensor #
-dht_sensor = Adafruit_DHT.DHT22
-gpio_input_pin_humidity_sensor_cold_spot = 5
-gpio_input_pin_humidity_sensor_hot_spot = 13
-
-# BMP180 air pressure sensor #
-bmp_sensor = BMP085()
+# DHT22 humidity & temperature sensor #
+dht_cold_spot = adafruit_dht.DHT22(board.D5)
+dht_hot_spot = adafruit_dht.DHT22(board.D13)
 
 # VEML 6075 UVA / UVB sensor #
-bus4 = smbus.SMBus(4)
-uv_sensor = veml6075.VEML6075(i2c_dev=bus4)
-uv_sensor.set_shutdown(False)
-uv_sensor.set_high_dynamic_range(False)
-uv_sensor.set_integration_time('100ms')
+i2c = busio.I2C(board.SCL, board.SDA)
+veml6075 = adafruit_veml6075.VEML6075(i2c, integration_time=100)
 
 # InfluxDB #
 influx_host_ip = '127.0.0.1'
@@ -44,111 +38,77 @@ json_body = [
             "pressure": 0.0,
             "uva": 0.0,
             "uvb": 0.0,
-            "uv_comp1": 0.0,
-            "uv_comp2": 0.0,
-            "uva_index": 0.0,
-            "uvb_index": 0.0,
-            "avg_uv_index": 0.0,
         }
     }
 ]
 
 
 def measure_cold_spot():
-    humidity, temperature = read_measurements_from_dht22(gpio_input_pin_humidity_sensor_cold_spot)
-    # print('measure_cold_spot', gpio_input_pin_humidity_sensor_cold_spot, humidity, temperature)
+    temperature = dht_cold_spot.temperature
+    humidity = dht_cold_spot.humidity
+    print('measure_cold_spot', humidity, temperature)
     return humidity, temperature
 
 
 def measure_hot_spot():
-    humidity, temperature = read_measurements_from_dht22(gpio_input_pin_humidity_sensor_hot_spot)
-    # print('measure_hot_spot', gpio_input_pin_humidity_sensor_hot_spot, humidity, temperature)
-    return humidity, temperature
-
-
-def read_measurements_from_dht22(gpio_pin):
-    # print('read_measurements_from_dht22', gpio_pin)
-    humidity, temperature = Adafruit_DHT.read_retry(dht_sensor, gpio_pin)
-    # print(gpio_pin, humidity, temperature)
-    if not humidity or not temperature:
-        return read_measurements_from_dht22(gpio_pin)
+    temperature = dht_hot_spot.temperature
+    humidity = dht_hot_spot.humidity
+    print('measure_hot_spot', humidity, temperature)
     return humidity, temperature
 
 
 def measure_room_temperature():
     room_temperature = temperature_sensor.read()
-    if not room_temperature:
-        return measure_room_temperature()
-    # print('measure_room_temperature', room_temperature)
+    print('measure_room_temperature', room_temperature)
     return room_temperature
 
 
-def measure_pressure():
-    pressure = bmp_sensor.read_pressure()
-    if not pressure:
-        return measure_pressure()
-    # print('measure_pressure', pressure)
-    return pressure
-
-
 def measure_uv_light():
-    uva, uvb = uv_sensor.get_measurements()
-    uv_comp1, uv_comp2 = uv_sensor.get_comparitor_readings()
-    uv_indices = uv_sensor.convert_to_index(uva, uvb, uv_comp1, uv_comp2)
-    uva_index = uv_indices[0]
-    uvb_index = uv_indices[1]
-    avg_uv_index = uv_indices[2]
-    # print('measure_uv_light', uva, uvb, uv_comp1, uv_comp2, uva_index, uvb_index, avg_uv_index)
-    return uva, uvb, uv_comp1, uv_comp2, uva_index, uvb_index, avg_uv_index
+    print('measure_uv_light', veml6075.uva, veml6075.uvb, veml6075.uv_index)
+    return veml6075.uva, veml6075.uvb, veml6075.uv_index
 
 
-def send_measurements(cold_spot_humidity, cold_spot_temperature, hot_spot_humidity, hot_spot_temperature, room_temperature, pressure, uva, uvb, uv_comp1, uv_comp2, uva_index, uvb_index, avg_uv_index):
-    # print('send_measurements')
+def send_measurements(cold_spot_humidity, cold_spot_temperature, hot_spot_humidity, hot_spot_temperature, room_temperature, uva, uvb, avg_uv_index):
+    print('Sending measurements to InfluxDB')
 
-    if 0 <= cold_spot_humidity <= 100:
+    if cold_spot_humidity and 0 <= cold_spot_humidity <= 100:
         json_body[0]['fields']['cold_spot_humidity'] = float(cold_spot_humidity)
     else:
         json_body[0]['fields'].pop('cold_spot_humidity', 0)
 
-    if 0 <= cold_spot_temperature <= 100:
+    if cold_spot_temperature and 0 <= cold_spot_temperature <= 100:
         json_body[0]['fields']['cold_spot_temperature'] = float(cold_spot_temperature)
     else:
         json_body[0]['fields'].pop('cold_spot_temperature', 0)
 
-    if 0 <= hot_spot_humidity <= 100:
+    if hot_spot_humidity and 0 <= hot_spot_humidity <= 100:
         json_body[0]['fields']['hot_spot_humidity'] = float(hot_spot_humidity)
     else:
         json_body[0]['fields'].pop('hot_spot_humidity', 0)
 
-    if 0 <= hot_spot_temperature <= 100:
+    if hot_spot_temperature and 0 <= hot_spot_temperature <= 100:
         json_body[0]['fields']['hot_spot_temperature'] = float(hot_spot_temperature)
     else:
         json_body[0]['fields'].pop('hot_spot_temperature', 0)
 
     json_body[0]['fields']['room_temperature'] = room_temperature
-    json_body[0]['fields']['pressure'] = pressure
     json_body[0]['fields']['uva'] = uva
     json_body[0]['fields']['uvb'] = uvb
-    json_body[0]['fields']['uv_comp1'] = uv_comp1
-    json_body[0]['fields']['uv_comp2'] = uv_comp2
-    json_body[0]['fields']['uva_index'] = uva_index
-    json_body[0]['fields']['uvb_index'] = uvb_index
     json_body[0]['fields']['avg_uv_index'] = avg_uv_index
+
     client.write_points(json_body)
 
 
 def measure():
-    # print('measure')
+    print('Start measuring...')
+    room_temperature = measure_room_temperature()
     cold_spot_humidity, cold_spot_temperature = measure_cold_spot()
     hot_spot_humidity, hot_spot_temperature = measure_hot_spot()
-    room_temperature = measure_room_temperature()
-    pressure = measure_pressure()
-    uva, uvb, uv_comp1, uv_comp2, uva_index, uvb_index, avg_uv_index = measure_uv_light()
-    send_measurements(cold_spot_humidity, cold_spot_temperature, hot_spot_humidity, hot_spot_temperature, room_temperature, pressure, uva, uvb, uv_comp1, uv_comp2, uva_index, uvb_index, avg_uv_index)
+    uva, uvb, avg_uv_index = measure_uv_light()
+    send_measurements(cold_spot_humidity, cold_spot_temperature, hot_spot_humidity, hot_spot_temperature, room_temperature, uva, uvb, avg_uv_index)
 
 
 def main():
-    # print('main')
     temperature_sensor.setup()
 
     RepeatedTimer(10, measure)

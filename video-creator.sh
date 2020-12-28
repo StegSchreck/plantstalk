@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+#15 8 * * * /home/pi/repos/plantstalk/video-creator.sh
 
 pushd /home/pi/pictures/plantstalk
 
@@ -18,7 +19,7 @@ fi
 python3 /home/pi/repos/plantstalk/video-uploader.py \
   --file ./${DATE}.mp4 \
   --title ${DATE} \
-  --description "Plantstalk Nachtsicht mit Raspberry Kamera -- ${DATE}" \
+  --description "Kronengecko Terrarium Nachtsicht mit Raspberry Kamera -- ${DATE}" \
   --privacyStatus "public"
 if [ $? -ne 0 ]
 then
